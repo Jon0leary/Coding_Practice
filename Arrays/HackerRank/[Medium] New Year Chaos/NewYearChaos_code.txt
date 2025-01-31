@@ -1,0 +1,62 @@
+using System.CodeDom.Compiler;
+using System.Collections.Generic;
+using System.Collections;
+using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.Serialization;
+using System.Text.RegularExpressions;
+using System.Text;
+using System;
+
+class Result
+{
+
+    public static void minimumBribes(List<int> q)
+    {
+        int bribes = 0;
+
+        for (int i = 0; i < q.Count; i++)
+        {
+            // Check if any person has moved more than 2 places ahead
+            if (q[i] - (i + 1) > 2)
+            {
+                Console.WriteLine("Too chaotic");
+                return;
+            }
+
+            // Count how many times the current person has been bribed
+            // A person q[i] can only move ahead at most two positions
+            // So, we check from (q[i] - 2) to (i)
+            for (int j = Math.Max(0, q[i] - 2); j < i; j++)
+            {
+                if (q[j] > q[i])
+                {
+                    bribes++;
+                }
+            }
+        }
+
+        Console.WriteLine(bribes);
+    }
+}
+
+class Solution
+{
+    public static void Main(string[] args)
+    {
+        int t = Convert.ToInt32(Console.ReadLine().Trim());
+
+        for (int tItr = 0; tItr < t; tItr++)
+        {
+            int n = Convert.ToInt32(Console.ReadLine().Trim());
+
+            List<int> q = Console.ReadLine().TrimEnd().Split(' ').ToList().Select(qTemp => Convert.ToInt32(qTemp)).ToList();
+
+            Result.minimumBribes(q);
+        }
+    }
+}

@@ -1,0 +1,63 @@
+using System.CodeDom.Compiler;
+using System.Collections.Generic;
+using System.Collections;
+using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.Serialization;
+using System.Text.RegularExpressions;
+using System.Text;
+using System;
+
+class Solution {
+
+    // Complete the minimumSwaps function below.
+    static int minimumSwaps(int[] arr) {
+        int n = arr.Length;
+        int swaps = 0;
+
+        // Create a dictionary to map values to their correct indices
+        Dictionary<int, int> indexMap = new Dictionary<int, int>();
+        for (int i = 0; i < n; i++)
+        {
+            indexMap[arr[i]] = i;
+        }
+
+        for (int i = 0; i < n; i++)
+        {
+            while (arr[i] != i + 1) // Since the numbers are 1 to n
+            {
+                int correctIndex = indexMap[i + 1]; // Find the correct position of i+1
+
+                // Swap elements
+                (arr[i], arr[correctIndex]) = (arr[correctIndex], arr[i]);
+
+                // Update indexMap after swapping
+                indexMap[arr[correctIndex]] = correctIndex;
+                indexMap[arr[i]] = i;
+
+                swaps++;
+            }
+        }
+
+        return swaps;
+    }
+
+    static void Main(string[] args) {
+        TextWriter textWriter = new StreamWriter(@System.Environment.GetEnvironmentVariable("OUTPUT_PATH"), true);
+
+        int n = Convert.ToInt32(Console.ReadLine());
+
+        int[] arr = Array.ConvertAll(Console.ReadLine().Split(' '), arrTemp => Convert.ToInt32(arrTemp))
+        ;
+        int res = minimumSwaps(arr);
+
+        textWriter.WriteLine(res);
+
+        textWriter.Flush();
+        textWriter.Close();
+    }
+}
